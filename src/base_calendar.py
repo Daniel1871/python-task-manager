@@ -78,8 +78,20 @@ class Calendar:
         lbl.pack(anchor=NW)
 
         languages_var = Variable(value=["Python", "JavaScript", "C#", "Java"])
-        languages_listbox = Listbox(frame, listvariable=languages_var, bg='slateblue3', font='Sans-serif 10 bold', fg='white', selectbackground='lightseagreen', height=4, width=8)
-        languages_listbox.pack(anchor=NW)
+        listbox = Listbox(frame, listvariable=languages_var, bg='slateblue3', font='Sans-serif 10 bold', fg='white', highlightcolor='red', selectbackground='lightseagreen', height=4, width=10)
+        listbox.pack(anchor=NW)
+
+        def callback(event):
+            selection = event.widget.curselection()
+            if selection:
+                index = selection[0]
+                data = event.widget.get(index)
+                print(data)
+            else:
+                print(123)
+
+        listbox.bind("<<ListboxSelect>>", callback)
+
 
         frame.grid(row=row, column=column, sticky=NSEW)
 
