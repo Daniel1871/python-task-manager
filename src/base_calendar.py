@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 import calendar
 import datetime
 
@@ -15,9 +16,9 @@ class Calendar:
         self.forward_button = Button(self.root, text='>', command=self.move_forward)
         self.forward_button.grid(row=0, column=6, sticky=NSEW)
 
-        for w_day in range(7):
-            lbl = Label(self.root, text=calendar.day_abbr[w_day], width=1, height=1, font='Arial 10 bold', fg='gray30')
-            lbl.grid(row=1, column=w_day, sticky=NSEW)
+        for day in range(7):
+            lbl = Label(self.root, text=calendar.day_abbr[day], width=1, height=1, font='Sans-serif 10 bold', fg='gray30')
+            lbl.grid(row=1, column=day, sticky=NSEW)
 
         self.fill_month()
 
@@ -37,7 +38,7 @@ class Calendar:
 
     def fill_month(self):
         top_lbl = Label(self.root, text=f'{calendar.month_name[self.month]} {self.year}', width=1, height=1,
-                        font='Arial 16 bold',
+                        font='Sans-serif 16 bold',
                         fg='black')
         top_lbl.grid(row=0, column=0, columnspan=5, sticky=NSEW)  # Объединяем с 0-й по 4-ю ячейки в одну
 
@@ -51,30 +52,46 @@ class Calendar:
         for row in range(2, 8):
             for column in range(7):
                 num_day = (row - 2) * 7 + column  # Номер дня на календаре: 0, ..., 41
-                if self.week_day <= num_day <= self.week_day + self.month_days - 1:  # Текущий месяц
+                if self.week_day <= num_day <= self.week_day + self.month_days - 1:
                     self.fill_this_month(row, column, num_day)
                 elif num_day < self.week_day:
                     self.fill_beginning(row, column, num_day)
                 else:
                     self.fill_end(row, column, num_day)
 
-    def fill_beginning(self, row, column, num_day):
-        lbl = Label(self.root, text=self.back_month_days - self.week_day + 1 + num_day, width=4, height=2, font='Arial 16 bold', fg='gray30')
-        lbl.grid(row=row, column=column, sticky=NSEW)
-    def fill_end(self, row, column, num_day):
-        lbl = Label(self.root, text=num_day - self.month_days - self.week_day + 1, width=4, height=2, font='Arial 16 bold', fg='gray30')
-        lbl.grid(row=row, column=column, sticky=NSEW)
     def fill_this_month(self, row, column, num_day):
-        lbl = Label(self.root, text=num_day - self.week_day + 1, width=4, height=2, font='Arial 16 bold', fg='black')
+        lbl = Label(self.root, text=num_day - self.week_day + 1, width=4, height=2, font='Sans-serif 16 bold', fg='black')
         lbl.grid(row=row, column=column, sticky=NSEW)
 
         if self.year == self.current_time.year and self.month == self.current_time.month and self.current_time.day == (num_day - self.week_day + 1):
             lbl['fg'] = 'white'
             lbl['bg'] = 'blue'
+
+    def fill_beginning(self, row, column, num_day):
+        lbl = Label(self.root, text=self.back_month_days - self.week_day + 1 + num_day, width=4, height=2, font='Sans-serif 16 bold', fg='gray30')
+        lbl.grid(row=row, column=column, sticky=NSEW)
+
+    def fill_end(self, row, column, num_day):
+        frame = Frame(self.root, borderwidth=1, relief=SOLID)
+        lbl = Label(frame, text=num_day - self.month_days - self.week_day + 1, width=4, height=2,
+                    font='Sans-serif 16 bold', fg='gray30')
+        lbl.pack(anchor=NW)
+
+        languages_var = Variable(value=["Python", "JavaScript", "C#", "Java"])
+        languages_listbox = Listbox(frame, listvariable=languages_var)
+        languages_listbox.pack(anchor=NW)
+
+        frame.grid(row=row, column=column, sticky=NSEW)
+
+        #lbl = Label(self.root, text=num_day - self.month_days - self.week_day + 1, width=4, height=2, font='Sans-serif 16 bold', fg='gray30')
+        #lbl.grid(row=row, column=column, sticky=NSEW)
+
+
 def main():
     root = Tk()  # Окно приложения
     root.title('Task manager')
     cal = Calendar(root)
+
     root.mainloop() # Запускаем постоянный цикл, чтобы программа работала
 
 if __name__ == '__main__':
