@@ -65,20 +65,20 @@ class Calendar:
 
         if self.year == self.current_time.year and self.month == self.current_time.month and self.current_time.day == (num_day - self.week_day + 1):
             lbl['fg'] = 'white'
-            lbl['bg'] = 'blue'
+            lbl['bg'] = 'royalblue'
 
     def fill_beginning(self, row, column, num_day):
         lbl = Label(self.root, text=self.back_month_days - self.week_day + 1 + num_day, width=4, height=2, font='Sans-serif 16 bold', fg='gray30')
         lbl.grid(row=row, column=column, sticky=NSEW)
 
     def fill_end(self, row, column, num_day):
-        frame = Frame(self.root, borderwidth=1, relief=SOLID)
+        frame = Frame(self.root,relief=SOLID)
         lbl = Label(frame, text=num_day - self.month_days - self.week_day + 1, width=4, height=2,
                     font='Sans-serif 16 bold', fg='gray30')
         lbl.pack(anchor=NW)
 
         languages_var = Variable(value=["Python", "JavaScript", "C#", "Java"])
-        languages_listbox = Listbox(frame, listvariable=languages_var)
+        languages_listbox = Listbox(frame, listvariable=languages_var, bg='slateblue3', font='Sans-serif 10 bold', fg='white', selectbackground='lightseagreen', height=4, width=8)
         languages_listbox.pack(anchor=NW)
 
         frame.grid(row=row, column=column, sticky=NSEW)
